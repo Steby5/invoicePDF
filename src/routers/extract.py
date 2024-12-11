@@ -7,6 +7,6 @@ router = APIRouter(prefix="/api/v1", tags=["Invoice Extraction"])
 @router.post("/extract")
 async def extract_invoice(file: UploadFile):
     content = await file.read()
-    extracted_data = process_pdf(content)
-    formatted_data = format_data(extracted_data)
-    return {"data": formatted_data}
+    text = process_pdf(content)
+    structured_data = format_data(text)
+    return {"data": structured_data}
