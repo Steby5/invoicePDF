@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Structuring Service</title>
+</head>
+<body>
+    <h1>Invoice Structuring Service</h1>
+    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+        <label for="file">Upload Invoice (PDF):</label>
+        <input type="file" id="file" name="file" accept=".pdf">
+        <button type="submit">Extract Data</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        const form = document.getElementById("uploadForm");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const file = document.getElementById("file").files[0];
+            if (!file) {
+                alert("Please select a file!");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("file", file);
+            const response = await fetch("/api/v1/extract", {
+                method: "POST",
+                body: formData,
+            });
+            const result = await response.json();
+            document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+        });
+    </script>
+</body>
+</html>
